@@ -82,7 +82,6 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
         print("Empty dataframe, skipping insert")
         return
 
-    # 🔥 1. mapping колонок (из parquet → ClickHouse)
     column_mapping = {
         "hash": "hash",
         "number": "number",
@@ -102,16 +101,12 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
         "previousblockhash": "previousblockhash"
     }
 
-    # оставляем только нужные колонки
     df = df[[col for col in df.columns if col in column_mapping]]
 
-    # переименовываем
     df = df.rename(columns=column_mapping)
 
-    # 🔥 2. добавляем partition column
     df["date"] = date
 
-    # 🔥 3. приведение типов (очень важно!)
     df["date"] = pd.to_datetime(df["date"]).dt.date
 
     if "timestamp" in df.columns:
@@ -120,7 +115,6 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
     if "mediantime" in df.columns:
         df["mediantime"] = pd.to_datetime(df["mediantime"], errors="coerce")
 
-    # числовые
     numeric_cols = [
         "size", "stripped_size", "weight", "number",
         "nonce", "transaction_count"
@@ -133,7 +127,6 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
     if "difficulty" in df.columns:
         df["difficulty"] = pd.to_numeric(df["difficulty"], errors="coerce")
 
-    # строки
     string_cols = [
         "hash", "merkle_root", "bits",
         "coinbase_param", "chainwork", "previousblockhash"
@@ -143,7 +136,6 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
         if col in df.columns:
             df[col] = df[col].astype(str)
 
-    # 🔥 4. порядок колонок (ВАЖНО для ClickHouse)
     columns = [
         "date",
         "hash",
@@ -164,15 +156,12 @@ def insert_btc_blocks(df: pd.DataFrame, date: str):
         "previousblockhash"
     ]
 
-    # оставляем только существующие
     columns = [col for col in columns if col in df.columns]
 
     df = df[columns]
 
-    # 🔥 5. convert to rows
     rows = df.values.tolist()
 
-    # 🔥 6. insert
     client.insert(
         "btc_stage.blocks",
         rows,
@@ -190,7 +179,6 @@ def insert_btc_transactions(df, date):
         print("Empty dataframe, skipping insert")
         return
 
-    # 🔥 1. mapping колонок (parquet → ClickHouse)
     column_mapping = {
         "hash": "hash",
         "size": "size",
@@ -209,25 +197,19 @@ def insert_btc_transactions(df, date):
         "fee": "fee"
     }
 
-    # оставляем только нужные колонки
     df = df[[col for col in df.columns if col in column_mapping]]
 
-    # переименовываем
     df = df.rename(columns=column_mapping)
 
-    # 🔥 2. добавляем partition column
     df["date"] = date
 
-    # 🔥 3. приведение типов (критично для ClickHouse)
 
-    # date
+    
     df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
 
-    # datetime
     if "block_timestamp" in df.columns:
         df["block_timestamp"] = pd.to_datetime(df["block_timestamp"], errors="coerce")
 
-    # числовые UInt
     uint_cols = [
         "size", "virtual_size", "version", "lock_time",
         "block_number", "index", "input_count", "output_count"
@@ -237,25 +219,21 @@ def insert_btc_transactions(df, date):
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0).astype("int64")
 
-    # float
     float_cols = ["input_value", "output_value", "fee"]
 
     for col in float_cols:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
 
-    # boolean
     if "is_coinbase" in df.columns:
         df["is_coinbase"] = df["is_coinbase"].fillna(False).astype(bool)
 
-    # строки
     string_cols = ["hash", "block_hash"]
 
     for col in string_cols:
         if col in df.columns:
             df[col] = df[col].astype(str)
 
-    # 🔥 4. порядок колонок (строго как в таблице!)
     columns = [
         "date",
         "hash",
@@ -275,15 +253,12 @@ def insert_btc_transactions(df, date):
         "fee"
     ]
 
-    # оставляем только существующие
     columns = [col for col in columns if col in df.columns]
 
     df = df[columns]
 
-    # 🔥 5. convert to rows
     rows = df.values.tolist()
 
-    # 🔥 6. insert
     client.insert(
         "btc_stage.transactions",
         rows,
