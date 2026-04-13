@@ -16,16 +16,16 @@ Bitcoin (AWS S3)        Solana (API)
                   │
                 dbt
                   │
-            Analytics / BI
+            Dat marts Layer
 ```
 ---
 ##  Stack
 
 - Python
-- Airflow
+- Airflow (www.astronomer.io)
 - AWS S3 (BTC data)
 - Solana JSON-RPC API
-- ClickHouse
+- ClickHouse (clickhouse.cloud)
 - dbt
 - Telegram alerts
 ---
