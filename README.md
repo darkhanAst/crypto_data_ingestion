@@ -1,10 +1,11 @@
-# 🚀 Crypto Data Platform (BTC + Solana)
+# Crypto Data Ingestion (BTC + Solana)
 
-Production-style data platform for blockchain analytics using **Bitcoin (S3)** and **Solana (API)**.
+Production-style data ingestion pipelines for blockchain analytics using **Bitcoin (S3)** and **Solana (API)**.
 
 ---
 
-## 🧠 Architecture
+## Architecture
+```text
 Bitcoin (AWS S3)        Solana (API)
         │                    │
         └──── Airflow DAGs ─┘
@@ -16,11 +17,12 @@ Bitcoin (AWS S3)        Solana (API)
                 dbt
                   │
             Analytics / BI
+```
 
 
 ---
 
-## ⚙️ Stack
+##  Stack
 
 - Python
 - Airflow
@@ -29,7 +31,6 @@ Bitcoin (AWS S3)        Solana (API)
 - ClickHouse
 - dbt
 - Telegram alerts
-
 ---
 
 ## Data Sources
@@ -41,7 +42,6 @@ Bitcoin (AWS S3)        Solana (API)
 ### Solana
 - JSON-RPC API
 - blocks + performance (TPS)
-
 ---
 
 ##  Pipelines
@@ -51,23 +51,18 @@ Bitcoin (AWS S3)        Solana (API)
 
 ### Solana (API)
 - RPC → extract block/slot → ClickHouse
-
 ---
 
-##  Analytics (dbt)
-
+##  Transformation (dbt)
 - BTC: blocks, tx, network activity
 - Solana: TPS, latency, throughput
-
 ---
 
 ##  Features
-
 - Airflow orchestration
 - Data quality checks
 - Telegram alerting
 - Hybrid ingestion (S3 + API)
-
 ---
 
 ## Key Concepts
