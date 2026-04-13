@@ -44,10 +44,10 @@ Bitcoin (AWS S3)        Solana (API)
 ##  Pipelines
 
 ### BTC (Batch)
-- S3 → transform → ClickHouse
+- S3  → ClickHouse -> dbt transform
 
 ### Solana (API)
-- RPC → extract block/slot → ClickHouse
+- RPC → extract block/slot → ClickHouse -> dbt transform
 ---
 
 ##  Transformation (dbt)
