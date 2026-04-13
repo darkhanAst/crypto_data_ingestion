@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: solana_stage
+    description: ""
+    database: solana_stage
+    tables:
+      - name: solana_blocks
+        description: ""
+        columns:
+          - name: slot
+            data_type: uint64
+            description: ""
+          - name: block_time
+            data_type: datetime
+            description: ""
+          - name: tx_count
+            data_type: uint32
+            description: ""
+          - name: ts
+            data_type: datetime
+            description: ""
+
+      - name: solana_performance
+        description: ""
+        columns:
+          - name: slot
+            data_type: uint64
+            description: ""
+          - name: num_transactions
+            data_type: uint64
+            description: ""
+          - name: sample_period
+            data_type: uint32
+            description: ""
+          - name: ts
+            data_type: datetime
+            description: ""

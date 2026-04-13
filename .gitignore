@@ -11,5 +11,4 @@ webserver_config.py
 airflow.cfg
 airflow.db
 dbt-env
-dbt/*
 logs

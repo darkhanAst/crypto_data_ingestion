@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: btc_blocks_daily
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique
+  - name: btc_transactions_daily
+    columns:
+      - name: date
+        tests:
+          - not_null
+          - unique

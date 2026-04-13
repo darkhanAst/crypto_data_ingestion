@@ -1,0 +1,116 @@
+version: 2
+
+sources:
+  - name: btc_stage
+    description: ""
+    database: btc_stage
+    tables:
+      - name: blocks
+        description: ""
+        columns:
+          - name: date
+            data_type: date
+            description: ""
+          - name: hash
+            data_type: string
+            description: ""
+          - name: size
+            data_type: uint64
+            description: ""
+          - name: stripped_size
+            data_type: uint64
+            description: ""
+          - name: weight
+            data_type: uint64
+            description: ""
+          - name: number
+            data_type: uint64
+            description: ""
+          - name: version
+            data_type: int32
+            description: ""
+          - name: merkle_root
+            data_type: string
+            description: ""
+          - name: timestamp
+            data_type: datetime
+            description: ""
+          - name: nonce
+            data_type: uint64
+            description: ""
+          - name: bits
+            data_type: string
+            description: ""
+          - name: coinbase_param
+            data_type: string
+            description: ""
+          - name: transaction_count
+            data_type: uint64
+            description: ""
+          - name: mediantime
+            data_type: datetime
+            description: ""
+          - name: difficulty
+            data_type: float64
+            description: ""
+          - name: chainwork
+            data_type: string
+            description: ""
+          - name: previousblockhash
+            data_type: string
+            description: ""
+          - name: inserted_at
+            data_type: datetime
+            description: ""
+
+      - name: transactions
+        description: ""
+        columns:
+          - name: date
+            data_type: string
+            description: ""
+          - name: hash
+            data_type: string
+            description: ""
+          - name: size
+            data_type: uint64
+            description: ""
+          - name: virtual_size
+            data_type: uint64
+            description: ""
+          - name: version
+            data_type: uint32
+            description: ""
+          - name: lock_time
+            data_type: uint32
+            description: ""
+          - name: block_hash
+            data_type: string
+            description: ""
+          - name: block_number
+            data_type: uint64
+            description: ""
+          - name: block_timestamp
+            data_type: datetime
+            description: ""
+          - name: index
+            data_type: uint32
+            description: ""
+          - name: input_count
+            data_type: uint32
+            description: ""
+          - name: output_count
+            data_type: uint32
+            description: ""
+          - name: input_value
+            data_type: float64
+            description: ""
+          - name: output_value
+            data_type: float64
+            description: ""
+          - name: is_coinbase
+            data_type: bool
+            description: ""
+          - name: fee
+            data_type: float64
+            description: ""
