@@ -166,7 +166,7 @@ BI / Dashboards
 
 ## 👨‍💻 Author
 
-Darkhan Kassimbekov  
+Darkhan  
 Data Engineering / Analytics Engineering Project
 
 ---

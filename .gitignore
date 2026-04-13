@@ -12,3 +12,4 @@ airflow.cfg
 airflow.db
 dbt-env
 dbt
+logs
