@@ -1,0 +1,4 @@
+project:
+    name: myproject
+webserver:
+    port: "8081"

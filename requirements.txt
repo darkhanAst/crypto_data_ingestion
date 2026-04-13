@@ -1,0 +1,13 @@
+astronomer-cosmos
+clickhouse-connect
+clickhouse-driver
+dbt-core
+dbt-clickhouse
+airflow-providers-clickhouse
+airflow-clickhouse-plugin
+requests
+apache-airflow
+pandas
+pyarrow
+s3fs
+
