@@ -18,10 +18,7 @@ Bitcoin (AWS S3)        Solana (API)
                   │
             Analytics / BI
 ```
-
-
 ---
-
 ##  Stack
 
 - Python
@@ -66,14 +63,7 @@ Bitcoin (AWS S3)        Solana (API)
 ---
 
 ## Key Concepts
-
 - Batch + API ingestion
 - Idempotent pipelines
-- Partitioned modeling
 - Observability
-
 ---
-
-## Author
-
-Darkhan
