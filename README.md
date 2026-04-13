@@ -1,45 +1,181 @@
-Overview
-========
+# 🚀 Crypto Data Platform (BTC + Solana)
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+A production-style end-to-end data engineering platform for ingesting, processing, and analyzing blockchain data from Bitcoin and Solana networks.
 
-Project Contents
-================
+The system demonstrates modern Data Engineering practices including **ETL orchestration, cloud storage ingestion, data warehousing, dbt modeling, and real-time alerting via Telegram**.
 
-Your Astro project contains the following files and folders:
+---
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+## 🧠 Architecture Overview
+S3 (BTC), Solana API (Solana)
+↓
+Airflow DAGs (Orchestration)
+↓
+Python Ingestion Layer
+↓
+ClickHouse (Data Warehouse)
+↓
+dbt (Analytics & Marts)
+↓
+BI / Dashboards
 
-Deploy Your Project Locally
-===========================
+---
 
-Start Airflow on your local machine by running 'astro dev start'.
+## ⚙️ Tech Stack
 
-This command will spin up five Docker containers on your machine, each for a different Airflow component:
+- 🐍 Python (ETL / ingestion)
+- 🌬 Apache Airflow (workflow orchestration)
+- ☁️ AWS S3 (public blockchain datasets)
+- 🗄 ClickHouse (OLAP database)
+- 🧱 dbt (data modeling)
+- 📩 Telegram API (alerting system)
 
-- Postgres: Airflow's Metadata Database
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- DAG Processor: The Airflow component responsible for parsing DAGs
-- API Server: The Airflow component responsible for serving the Airflow UI and API
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+---
 
-When all five containers are ready the command will open the browser to the Airflow UI at http://localhost:8080/. You should also be able to access your Postgres Database at 'localhost:5432/postgres' with username 'postgres' and password 'postgres'.
+## 📊 Data Sources
 
-Note: If you already have either of the above ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+### Bitcoin
+- AWS Public Dataset:
+  - `s3://aws-public-blockchain/v1.0/btc/blocks/`
+  - `s3://aws-public-blockchain/v1.0/btc/transactions/`
 
-Deploy Your Project to Astronomer
-=================================
+### Solana
+- Blockchain performance & block data
+- Slots, TPS, transaction throughput
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+---
 
-Contact
-=======
+## 🔄 Pipeline Overview
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+### 1. Extraction
+- Reads parquet files from AWS S3
+- Handles schema inconsistencies (string vs dictionary encoding)
+- Partition-based loading by `date`
+
+### 2. Transformation
+- Type normalization (timestamps, numeric fields)
+- Deduplication and schema alignment
+- Data quality validation
+
+### 3. Loading
+- Inserts optimized batches into ClickHouse
+- Partitioned by `date`
+- Ordered for query performance
+
+---
+
+## 📦 Key Features
+
+### ✅ Production-style Airflow DAGs
+- Daily scheduled ingestion
+- Retry logic
+- Task dependencies (blocks → transactions)
+
+### 📩 Telegram Alerting System
+- Failure notifications via callbacks
+- Includes error details and Airflow logs
+- Real-time incident visibility
+
+### 🧠 Data Quality Layer
+- dbt-style checks:
+  - uniqueness constraints
+  - null validation
+  - anomaly detection (audit layer)
+
+### 📊 Analytics Ready Models
+- BTC:
+  - daily blocks metrics
+  - transaction throughput
+  - network efficiency (WAP-like metrics)
+
+- Solana:
+  - TPS calculation
+  - block production latency
+  - network load analysis
+
+---
+
+## 🧱 Data Models
+
+### BTC Tables
+- `btc_blocks`
+- `btc_transactions`
+
+### Solana Tables
+- `solana_blocks`
+- `solana_performance`
+
+---
+
+## 📈 Example Metrics
+
+### Bitcoin
+- Blocks per day
+- Transactions per block
+- Average block size
+- Network difficulty trends
+
+### Solana
+- TPS (Transactions Per Second)
+- Peak throughput (p95 / p99)
+- Block latency
+- Network efficiency
+
+---
+
+## 🚨 Observability
+
+- Airflow task failure alerts → Telegram
+- Logging for ingestion steps
+- Error context propagation (task_id, DAG, logs)
+
+---
+
+## 🧪 Data Quality Strategy
+
+- Schema enforcement during ingestion
+- dbt-style tests:
+  - NOT NULL constraints
+  - uniqueness checks
+  - anomaly detection models
+- Audit layer for validation metrics
+
+---
+
+## 🧠 Key Engineering Concepts Demonstrated
+
+- ETL / ELT pipeline design
+- Idempotent data ingestion
+- Partitioned data modeling
+- Schema drift handling (S3 parquet inconsistency)
+- Distributed data warehousing with ClickHouse
+- Observability in data pipelines
+- Event-driven alerting system
+
+---
+
+## 📌 Future Improvements
+
+- Incremental ingestion (CDC-style)
+- Kafka-based streaming ingestion
+- dbt CI/CD with GitHub Actions
+- AI agent for pipeline debugging
+- Data lineage tracking
+
+---
+
+## 👨‍💻 Author
+
+Darkhan Kassimbekov  
+Data Engineering / Analytics Engineering Project
+
+---
+
+## ⭐ Why this project matters
+
+This project simulates a **real-world production data platform** used in fintech and blockchain analytics environments, demonstrating:
+
+- scalability thinking
+- production-grade pipeline design
+- analytics engineering practices
+- observability & reliability patterns
